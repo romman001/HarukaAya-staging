@@ -1,26 +1,21 @@
 import datetime
 import importlib
 import re
-from typing import Optional, List
+from typing import List
 
-from telegram import Message, Chat, Update, Bot, User
-from telegram import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup, KeyboardButton
-from telegram.error import Unauthorized, BadRequest, TimedOut, NetworkError, ChatMigrated, TelegramError
+from telegram import Update, Bot
+from telegram import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton
+from telegram.error import (Unauthorized, BadRequest, TimedOut, NetworkError,
+                            ChatMigrated, TelegramError)
 from telegram.ext import CommandHandler, Filters, MessageHandler, CallbackQueryHandler
 from telegram.ext.dispatcher import run_async, DispatcherHandlerStop, Dispatcher
-from telegram.utils.helpers import escape_markdown
 
-from haruka import dispatcher, updater, TOKEN, WEBHOOK, SUDO_USERS, OWNER_ID, CERT_PATH, PORT, URL, LOGGER, \
-    ALLOW_EXCL
-
-
-#Needed to dynamically load modules
-#NOTE: Module order is not guaranteed, specify that in the config file!
+# Needed to dynamically load modules
+# NOTE: Module order is not guaranteed, specify that in the config file!
 from haruka.modules import ALL_MODULES
-from haruka.modules.helper_funcs.chat_status import is_user_admin
+from haruka import dispatcher, updater, LOGGER, ALLOW_EXCL
 from haruka.modules.helper_funcs.misc import paginate_modules
-from haruka.modules.translations.strings import tld, tld_help
-from haruka.modules.connection import connected
+from haruka.modules.tr_engine.strings import tld
 
 IMPORTED = {}
 MIGRATEABLE = []
@@ -34,6 +29,8 @@ CHAT_SETTINGS = {}
 USER_SETTINGS = {}
 
 GDPR = []
+
+importlib.import_module("haruka.modules.tr_engine.language")
 
 for module_name in ALL_MODULES:
     imported_module = importlib.import_module("haruka.modules." + module_name)
