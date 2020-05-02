@@ -1,21 +1,20 @@
-import random, re, io, asyncio
+import random, re, string, io, asyncio
 from PIL import Image
 from io import BytesIO
+import base64
 from spongemock import spongemock
 from zalgo_text import zalgo
-from deeppyer import deepfry
 import os
 from pathlib import Path
 import glob
 
-from typing import List
-from telegram import Update, Bot, ParseMode, Message
-from telegram.ext import run_async
+from typing import Optional, List
+from telegram import Message, Update, Bot, User
+from telegram import MessageEntity
+from telegram.ext import Filters, MessageHandler, run_async
 
-from haruka import dispatcher, DEEPFRY_TOKEN, LOGGER
-from haruka.modules.disable import DisableAbleCommandHandler
-from telegram.utils.helpers import escape_markdown
-from haruka.modules.helper_funcs.extraction import extract_user
+from haruka import dispatcher
+from haruka.modules.disable import DisableAbleCommandHandler, DisableAbleRegexHandler
 from haruka.modules.tr_engine.strings import tld, tld_list
 
 WIDE_MAP = dict((i, i + 0xFEE0) for i in range(0x21, 0x7F))
